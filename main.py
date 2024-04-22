@@ -9,7 +9,7 @@ def draw_block():
 
 
 if __name__ == "__main__":
-    pygame.init()
+    pygame.init()    # Initialiser pygame
 
     surface = pygame.display.set_mode((1000, 500))   # to create a surface
     surface.fill((59, 125, 212))                     # define the background color
