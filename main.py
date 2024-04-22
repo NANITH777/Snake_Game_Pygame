@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-
+import time
 
 class Snake:
     def __init__(self, surface_screen):
@@ -8,6 +8,7 @@ class Snake:
         self.block = pygame.image.load("resources/block.jpg").convert()    # to load the image
         self. x = 500
         self.y = 250
+        self.direction = 'up'
 
     def draw(self):
         self.surface_screen.fill((59, 125, 212))
@@ -16,21 +17,27 @@ class Snake:
         pygame.display.flip()  # or display.update()
 
     def move_left(self):
-        self.x -= 10
-        self.draw()
+        self.direction = 'left'
 
     def move_right(self):
-        self.x += 10
-        self.draw()
+        self.direction = 'right'
 
     def move_up(self):
-        self.y -= 10
-        self.draw()
+        self.direction = 'up'
 
     def move_down(self):
-        self.y += 10
-        self.draw()
+        self.direction = 'down'
 
+    def snake_move(self):
+        if self.direction == 'left':
+            self.x -= 10
+        if self.direction == 'right':
+            self.x += 10
+        if self.direction == 'up':
+            self.y -= 10
+        if self.direction == 'down':
+            self.y += 10
+        self.draw()
 
 class Game:
     def __init__(self):
@@ -58,6 +65,9 @@ class Game:
                         self.snake.move_right()
                 elif event.type == QUIT:
                     running = False
+
+            self.snake.snake_move()
+            time.sleep(0.2)
 
 
 if __name__ == "__main__":
