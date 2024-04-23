@@ -74,6 +74,10 @@ class Fruit:
 class Game:
     def __init__(self):
         pygame.init()  # Initialiser pygame
+        pygame.display.set_caption("Snake Game")
+
+        pygame.mixer.init()
+        self.game_music()
         self.surface = pygame.display.set_mode((1000, 640))  # to create a surface
         self.surface.fill((59, 125, 212))  # define the background color(rgb color picker)
         self.snake = Snake(self.surface, 1)
@@ -88,12 +92,28 @@ class Game:
         pygame.display.flip()
 
         if self.collision(self.snake.x[0], self.snake.y[0], self.fruit.x, self.fruit.y):
+            self.play_sound("ding2")
             self.snake.increase_snake()
             self.fruit.move()
 
+        head_x = self.snake.x[0]
+        head_y = self.snake.y[0]
+        game_width = 1000
+        game_height = 640
+
         for i in range(3, self.snake.length):
             if self.collision(self.snake.x[0], self.snake.y[0], self.snake.x[i], self.snake.y[i]):
+                self.play_sound("crash")
+                self.play_sound("game_over")
                 raise "Game Over"
+
+    def game_music(self):
+        pygame.mixer.music.load("resources/game_music.mp3")
+        pygame.mixer.music.play()
+
+    def play_sound(self, sound):
+        sound = pygame.mixer.Sound(f"resources/{sound}.mp3")
+        pygame.mixer.Sound.play(sound)
 
     def game_over(self):
         self.surface.fill(BACKGROUND_COLOR)
@@ -103,6 +123,7 @@ class Game:
         text2 = font.render(f"To play again press Enter. To exit press Escape", True, (250, 250, 250))
         self.surface.blit(text2, (220, 360))
         pygame.display.flip()
+        pygame.mixer.music.pause()
 
     def reset(self):
         self.snake = Snake(self.surface, 1)
@@ -120,6 +141,7 @@ class Game:
 
     def run(self):
         running = True
+        over = False
         pause = False
 
         while running:
@@ -128,9 +150,10 @@ class Game:
                     if event.key == K_ESCAPE:
                         running = False
                     if event.key == K_RETURN:
-                        pause = False
+                        over = False
+                        pygame.mixer.music.unpause()
 
-                    if not pause:
+                    if not over:
                         if event.key == K_UP:
                             self.snake.move_up()
                         if event.key == K_DOWN:
@@ -143,14 +166,14 @@ class Game:
                     running = False
 
             try:
-                if not pause:
+                if not over:
                     game.play()
             except Exception as e:
                 self.game_over()
-                pause = True
+                over = True
                 self.reset()
 
-            time.sleep(0.3)
+            time.sleep(0.25)
 
 
 if __name__ == "__main__":
