@@ -157,6 +157,7 @@ class Game:
     def run(self):
         running = True
         over = False
+        paused = False
         delay = 0.2
 
         while running:
@@ -169,7 +170,10 @@ class Game:
                         over = False
                         pygame.mixer.music.unpause()
 
-                    if not over:
+                    if event.key == K_SPACE:
+                        paused = not paused
+
+                    if not over and not paused:
                         if event.key == K_UP:
                             self.snake.move_up()
                         if event.key == K_DOWN:
@@ -185,7 +189,7 @@ class Game:
                     self.game_music()  # Restart the music
 
             try:
-                if not over:
+                if not over and not paused:
                     game.play()
             except Exception as e:
                 self.game_over()
