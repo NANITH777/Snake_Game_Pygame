@@ -5,6 +5,7 @@ import random
 
 SIZE = 40
 BACKGROUND_COLOR = (59, 125, 212)
+delay = 0.2
 
 
 class Snake:
@@ -93,7 +94,7 @@ class Game:
         self.snake_background()
         self.snake.snake_move()
         self.fruit.draw()
-        self.display_score()
+        self.display_score_level()
         pygame.display.flip()
 
         if self.collision(self.snake.x[0], self.snake.y[0], self.fruit.x, self.fruit.y):
@@ -126,8 +127,9 @@ class Game:
     def game_over(self):
         self.snake_background()
         font = pygame.font.SysFont('arial', 30)
-        text1 = font.render(f"Game is over!!! your score is : {self.snake.length}", True, (250, 250, 250))
-        self.surface.blit(text1, (300, 300))
+        text1 = font.render(f"Game is over!!! your score is : {self.snake.length} level is : "
+                            f"{self.snake.length // 5 + 1}", True, (250, 250, 250))
+        self.surface.blit(text1, (230, 300))
         text2 = font.render(f"To play again press Enter. To exit press Escape", True, (250, 250, 250))
         self.surface.blit(text2, (220, 360))
         pygame.display.flip()
@@ -142,14 +144,20 @@ class Game:
                 return True
         return False
 
-    def display_score(self):
+    def display_score_level(self):
         font = pygame.font.SysFont('arial', 30)
+        level = self.snake.length // 5 + 1
+
         score = font.render(f"score: {self.snake.length}", True, (250, 250, 250))
+        level_text = font.render(f"Level: {level}", True, (250, 250, 250))
+
         self.surface.blit(score, (850, 10))
+        self.surface.blit(level_text, (850, 50))
 
     def run(self):
         running = True
         over = False
+        delay = 0.2
 
         while running:
             for event in pygame.event.get():
@@ -173,7 +181,6 @@ class Game:
                 elif event.type == QUIT:
                     running = False
 
-                # Check for custom music end event
                 elif event.type == pygame.USEREVENT + 1:
                     self.game_music()  # Restart the music
 
@@ -184,8 +191,13 @@ class Game:
                 self.game_over()
                 over = True
                 self.reset()
+                delay = 0.2
 
-            time.sleep(0.2)
+            # Check if snake length is a multiple of 5 and reduce the delay
+            if self.snake.length % 5 == 0 and self.snake.length != 0:
+                delay = max(0.05, delay - 0.01)  # Reduce the delay, but don't go below 0.05 seconds
+
+            time.sleep(delay)
 
 
 if __name__ == "__main__":
