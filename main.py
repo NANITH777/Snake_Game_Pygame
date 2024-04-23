@@ -53,6 +53,7 @@ class Snake:
         self.x.append(-1)
         self.y.append(-1)
 
+
 class Fruit:
     def __init__(self, surface_screen):
         self.surface_screen = surface_screen
@@ -74,11 +75,10 @@ class Game:
         pygame.init()  # Initialiser pygame
         self.surface = pygame.display.set_mode((1000, 640))  # to create a surface
         self.surface.fill((59, 125, 212))  # define the background color(rgb color picker)
-        self.snake = Snake(self.surface, 1)
+        self.snake = Snake(self.surface, 10)
         self.snake.draw()
         self.fruit = Fruit(self.surface)
         self.fruit.draw()
-
 
     def play(self):
         self.snake.snake_move()
@@ -90,16 +90,22 @@ class Game:
             self.fruit.move()
             self.snake.increase_snake()
 
+        for i in range(3, self.snake.length):
+            if self.collision(self.snake.x[0], self.snake.y[0], self.snake.x[i], self.snake.y[i]):
+                raise "Game Over"
+
     def collision(self, x1, y1, x2, y2):
         if x1 >= x2 and x1 < x2 + SIZE:
             if y1 >= y2 and y1 < y2 + SIZE:
                 return True
         return False
 
+
     def display_score(self):
         font = pygame.font.SysFont('arial', 30)
         score = font.render(f"score: {self.snake.length}", True, (250, 250, 250))
         self.surface.blit(score, (850, 10))
+
     def run(self):
         running = True
         while running:
@@ -119,7 +125,11 @@ class Game:
                 elif event.type == QUIT:
                     running = False
 
-            game.play()
+            try:
+                game.play()
+            except Exception as e:
+                self.show_game_over()
+
             time.sleep(0.3)
 
 
