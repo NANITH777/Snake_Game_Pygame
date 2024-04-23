@@ -100,16 +100,18 @@ class Game:
             self.snake.increase_snake()
             self.fruit.move()
 
-        head_x = self.snake.x[0]
-        head_y = self.snake.y[0]
-        game_width = 1000
-        game_height = 640
-
         for i in range(3, self.snake.length):
             if self.collision(self.snake.x[0], self.snake.y[0], self.snake.x[i], self.snake.y[i]):
                 self.play_sound("crash")
                 self.play_sound("game_over")
+                self.game_music()
                 raise "Game Over"
+
+        if not (0 <= self.snake.x[0] <= 1000 and 0 <= self.snake.y[0] <= 640):
+            self.play_sound("crash")
+            self.play_sound("game_over")
+            self.game_music()
+            raise "Hit The borders"
 
     def game_music(self):
         pygame.mixer.music.load("resources/game_music.mp3")
@@ -133,6 +135,7 @@ class Game:
         self.snake = Snake(self.surface, 1)
         self.fruit = Fruit(self.surface)
 
+
     def collision(self, x1, y1, x2, y2):
         if x2 <= x1 < x2 + SIZE and y2 <= y1 < y2 + SIZE:
                 return True
@@ -146,13 +149,13 @@ class Game:
     def run(self):
         running = True
         over = False
-        pause = False
 
         while running:
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
                         running = False
+
                     if event.key == K_RETURN:
                         over = False
                         pygame.mixer.music.unpause()
@@ -177,7 +180,7 @@ class Game:
                 over = True
                 self.reset()
 
-            time.sleep(0.25)
+            time.sleep(0.2)
 
 
 if __name__ == "__main__":
