@@ -16,7 +16,6 @@ class Snake:
         self.direction = 'right'
 
     def draw(self):
-        self.surface_screen.fill(BACKGROUND_COLOR)
         for i in range(self.length):
             self.surface_screen.blit(self.block, (self.x[i], self.y[i]))  # blit pour afficher l'image et (100, 100)
                                                                 # pour les coordonnees de l'image
@@ -85,7 +84,12 @@ class Game:
         self.fruit = Fruit(self.surface)
         self.fruit.draw()
 
+    def snake_background(self):
+        bg = pygame.image.load("resources/background.jpg")
+        self.surface.blit(bg, (0, 0))
+
     def play(self):
+        self.snake_background()
         self.snake.snake_move()
         self.fruit.draw()
         self.display_score()
@@ -116,7 +120,7 @@ class Game:
         pygame.mixer.Sound.play(sound)
 
     def game_over(self):
-        self.surface.fill(BACKGROUND_COLOR)
+        self.snake_background()
         font = pygame.font.SysFont('arial', 30)
         text1 = font.render(f"Game is over!!! your score is : {self.snake.length}", True, (250, 250, 250))
         self.surface.blit(text1, (300, 300))
