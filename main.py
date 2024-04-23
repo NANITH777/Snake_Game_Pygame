@@ -6,6 +6,7 @@ import random
 SIZE = 40
 BACKGROUND_COLOR = (59, 125, 212)
 
+
 class Snake:
     def __init__(self, surface_screen, length):
         self.length = length
@@ -116,6 +117,7 @@ class Game:
     def game_music(self):
         pygame.mixer.music.load("resources/game_music.mp3")
         pygame.mixer.music.play()
+        pygame.mixer.music.set_endevent(pygame.USEREVENT + 1)  # Set event when music ends
 
     def play_sound(self, sound):
         sound = pygame.mixer.Sound(f"resources/{sound}.mp3")
@@ -134,7 +136,6 @@ class Game:
     def reset(self):
         self.snake = Snake(self.surface, 1)
         self.fruit = Fruit(self.surface)
-
 
     def collision(self, x1, y1, x2, y2):
         if x2 <= x1 < x2 + SIZE and y2 <= y1 < y2 + SIZE:
@@ -171,6 +172,10 @@ class Game:
                             self.snake.move_right()
                 elif event.type == QUIT:
                     running = False
+
+                # Check for custom music end event
+                elif event.type == pygame.USEREVENT + 1:
+                    self.game_music()  # Restart the music
 
             try:
                 if not over:
