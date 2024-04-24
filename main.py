@@ -4,7 +4,7 @@ import time
 import random
 
 SIZE = 40
-BACKGROUND_COLOR = (59, 125, 212)
+BACKGROUND_COLOR = (40, 30, 232)
 delay = 0.2
 
 
@@ -89,6 +89,47 @@ class Game:
     def snake_background(self):
         bg = pygame.image.load("resources/background.jpg")
         self.surface.blit(bg, (0, 0))
+
+    def instructions_music(self):
+        pygame.mixer.music.load("resources/instru_music.mp3")
+        pygame.mixer.music.play()
+        pygame.mixer.music.set_endevent(pygame.USEREVENT + 1)
+
+    def show_instructions(self):
+        self.surface.fill(BACKGROUND_COLOR)
+        self.instructions_music()
+        font = pygame.font.SysFont('arial black', 30)
+        instructions = [
+            "Welcome to SNAKE GAME!",
+            "",
+            "Use arrow keys to move the snake.",
+            "Press SPACE to pause/resume the game.",
+            "Press ESCAPE to quit the game.",
+            "",
+            "Press ENTER to start the game."
+        ]
+
+        y_position = 100
+        for line in instructions:
+            text_surface = font.render(line, True, (255, 255, 255))
+            self.surface.blit(text_surface, (250, y_position))
+            y_position += 50
+
+        pygame.display.flip()
+
+        waiting = True
+        while waiting:
+            for event in pygame.event.get():
+                if event.type == KEYDOWN:
+                    if event.key == K_RETURN:
+                        waiting = False
+                        pygame.mixer.music.stop()
+
+                elif event.type == pygame.USEREVENT + 1:
+                    self.instructions_music()
+                elif event.type == QUIT:
+                    pygame.quit()
+                    exit(0)
 
     def play(self):
         self.snake_background()
@@ -206,6 +247,7 @@ class Game:
 
 if __name__ == "__main__":
     game = Game()
+    game.show_instructions()
     game.run()
     pygame.display.flip()
 
