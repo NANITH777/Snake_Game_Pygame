@@ -14,6 +14,11 @@ The game involves controlling a snake that moves around a grid. The goal is to e
 - Music and sound effects to enhance the gaming experience.
 - The game ends when a collision with a wall or the snake itself occurs.
 
+## İmages 
+
+<img width="750" alt="Snake_Game_Welcome" src="https://github.com/NANITH777/Snake_Game_Pygame/assets/109669139/c8292fe5-dca3-4e6b-9c98-3091cdc29069">
+
+
 ## Installation
 
 To install and run the game, ensure you have Python 3 and Pygame installed on your system.
