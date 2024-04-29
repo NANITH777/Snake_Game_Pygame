@@ -16,8 +16,8 @@ The game involves controlling a snake that moves around a grid. The goal is to e
 
 ## Images 
 
-<img width="751" alt="Snake_Game_Play" src="https://github.com/NANITH777/Snake_Game_Pygame/assets/109669139/f178cc14-7474-4b37-93d5-9ad83d5ccb83">
 <img width="750" alt="Snake_Game_Welcome" src="https://github.com/NANITH777/Snake_Game_Pygame/assets/109669139/c8292fe5-dca3-4e6b-9c98-3091cdc29069">
+<img width="751" alt="Snake_Game_Play" src="https://github.com/NANITH777/Snake_Game_Pygame/assets/109669139/f178cc14-7474-4b37-93d5-9ad83d5ccb83">
 <img width="743" alt="Snake_GameOver" src="https://github.com/NANITH777/Snake_Game_Pygame/assets/109669139/1f9101b7-9c57-4ec6-b701-c06b4faf1389">
 
 
